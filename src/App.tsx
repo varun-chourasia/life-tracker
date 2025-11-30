@@ -446,7 +446,7 @@ const calculateStreaks = (tasks: Task[]) => {
 function TrackerApp() {
   const [configError, setConfigError] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
-  const [darkMode, setDarkMode] = useState(true);
+  // const [darkMode, setDarkMode] = useState(true);
 
   const [user, setUser] = useState<User | null>(null);
   // syncId state removed as it was unused
@@ -512,19 +512,19 @@ function TrackerApp() {
     window.addEventListener("offline", handleStatusChange);
     if ("Notification" in window)
       Notification.requestPermission().then(setNotifPermission);
-    const savedTheme = localStorage.getItem("life_os_theme");
-    if (savedTheme) setDarkMode(savedTheme === "dark");
+    // const savedTheme = localStorage.getItem("life_os_theme");
+    // if (savedTheme) setDarkMode(savedTheme === "dark");
     return () => {
       window.removeEventListener("online", handleStatusChange);
       window.removeEventListener("offline", handleStatusChange);
     };
   }, []);
 
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    localStorage.setItem("life_os_theme", newMode ? "dark" : "light");
-  };
+  // const toggleDarkMode = () => {
+  //   const newMode = !darkMode;
+  //   setDarkMode(newMode);
+  //   localStorage.setItem("life_os_theme", newMode ? "dark" : "light");
+  // };
 
   // --- Logic hooks ---
   useEffect(() => {
@@ -967,20 +967,20 @@ function TrackerApp() {
         .sort((a, b) => a.startTime.localeCompare(b.startTime)),
     [tasks, selectedDate]
   );
-  const progressStats = useMemo(() => {
-    const total = tasks.length;
-    const completed = tasks.filter((t) => t.completed).length;
-    const byCategory = Object.keys(CATEGORY_COLORS)
-      .map((cat) => ({
-        name: cat,
-        total: tasks.filter((t) => t.category === (cat as Category)).length,
-        completed: tasks.filter(
-          (t) => t.category === (cat as Category) && t.completed
-        ).length,
-      }))
-      .filter((c) => c.total > 0);
-    return { total, completed, byCategory };
-  }, [tasks]);
+  // const progressStats = useMemo(() => {
+  //   const total = tasks.length;
+  //   const completed = tasks.filter((t) => t.completed).length;
+  //   const byCategory = Object.keys(CATEGORY_COLORS)
+  //     .map((cat) => ({
+  //       name: cat,
+  //       total: tasks.filter((t) => t.category === (cat as Category)).length,
+  //       completed: tasks.filter(
+  //         (t) => t.category === (cat as Category) && t.completed
+  //       ).length,
+  //     }))
+  //     .filter((c) => c.total > 0);
+  //   return { total, completed, byCategory };
+  // }, [tasks]);
   const routineStats = useMemo(() => {
     const completedIds = routineHistory[formatDate(selectedDate)] || [];
     const total = routine.length;
@@ -988,14 +988,14 @@ function TrackerApp() {
       total === 0 ? 0 : Math.round((completedIds.length / total) * 100);
     return { total, completed: completedIds.length, percent };
   }, [routineHistory, selectedDate, routine]);
-  const pieData = useMemo(
-    () =>
-      progressStats.byCategory.map((c) => ({
-        name: c.name,
-        value: c.completed,
-      })),
-    [progressStats]
-  );
+  // const pieData = useMemo(
+  //   () =>
+  //     progressStats.byCategory.map((c) => ({
+  //       name: c.name,
+  //       value: c.completed,
+  //     })),
+  //   [progressStats]
+  // );
   const sortedMonths = useMemo(() => {
     const tasksByMonth: Record<string, Task[]> = {};
     tasks.forEach((task) => {
