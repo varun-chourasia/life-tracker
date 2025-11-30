@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, Component, type ErrorInfo, type ReactNode } from 'react';
+import { useState, useEffect, useMemo, Component, type ReactNode } from 'react';
 import { 
   CheckCircle2, 
   LayoutDashboard, 
@@ -74,6 +74,12 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boole
     this.state = { hasError: false, error: null };
   }
   static getDerivedStateFromError(error: Error) { return { hasError: true, error }; }
+  
+  // Removed explicit type 'ErrorInfo' to satisfy Vercel build
+  componentDidCatch(error: Error, errorInfo: any) {
+    console.error("Uncaught error:", error, errorInfo);
+  }
+
   render() {
     if (this.state.hasError) {
       return (
