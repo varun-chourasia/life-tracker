@@ -1,4 +1,4 @@
-import {
+import React, {
   useState,
   useEffect,
   useMemo,
@@ -44,11 +44,8 @@ import {
   Save,
   Calendar,
   LineChart as LineChartIcon,
-  Settings,
   Download,
   AlertOctagon,
-  Mail,
-  Check,
   BadgeCheck,
 } from "lucide-react";
 import {
@@ -77,9 +74,9 @@ import {
   deleteUser,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  sendPasswordResetEmail, // ADDED
-  sendEmailVerification, // ADDED
   type User,
+  sendEmailVerification,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -392,7 +389,6 @@ const formatTimer = (seconds: number) => {
   return `${mins}:${secs.toString().padStart(2, "0")}`;
 };
 
-// --- STREAK CALCULATOR ---
 const calculateStreaks = (tasks: Task[]) => {
   const activeDates = [
     ...new Set(tasks.filter((t) => t.completed).map((t) => t.date)),
@@ -522,7 +518,6 @@ function TrackerApp() {
     };
   }, []);
 
-  // --- Logic hooks ---
   useEffect(() => {
     const interval = setInterval(() => {
       if (notifPermission !== "granted") return;
@@ -680,7 +675,6 @@ function TrackerApp() {
     }
   };
 
-  // --- Settings Handlers ---
   const handleDeleteAccount = async () => {
     if (!user || !user.email) return;
     if (
@@ -730,7 +724,6 @@ function TrackerApp() {
     }
   };
 
-  // --- MOBILE-OPTIMIZED EXPORT ---
   const handleExportData = () => {
     const data = JSON.stringify(
       {
@@ -912,7 +905,6 @@ function TrackerApp() {
       routine.filter((r) => r.id !== id)
     );
   };
-
   const toggleTask = (id: string) => {
     if (activeTaskId === id) setActiveTaskId(null);
     const task = tasks.find((t) => t.id === id);
@@ -924,7 +916,6 @@ function TrackerApp() {
     const xpData = updateXp(xpChange);
     saveData(newTasks, routineHistory, routine, xpData.newXp, xpData.newLevel);
   };
-
   const toggleRoutineItem = (routineId: string) => {
     const dateKey = formatDate(selectedDate);
     const completedToday = routineHistory[dateKey] || [];
@@ -942,7 +933,6 @@ function TrackerApp() {
       xpData.newLevel
     );
   };
-
   const deleteTask = (id: string) => {
     saveData(
       tasks.filter((t) => t.id !== id),
@@ -1019,7 +1009,6 @@ function TrackerApp() {
   }, [tasks]);
   const streakData = useMemo(() => calculateStreaks(tasks), [tasks]);
 
-  // Month Grid Logic
   const monthGrid = useMemo(() => {
     const year = heatmapDate.getFullYear();
     const month = heatmapDate.getMonth();
@@ -1096,13 +1085,11 @@ function TrackerApp() {
               {authError}
             </div>
           )}
-          {/* ADDED: Success Message */}
           {authMode === "login" && authSuccess && (
             <div className="bg-green-900/30 text-green-400 p-3 rounded mb-4 text-sm border border-green-800">
               {authSuccess}
             </div>
           )}
-
           <form onSubmit={handleAuth} className="space-y-4">
             <input
               type="email"
@@ -1134,7 +1121,6 @@ function TrackerApp() {
             </button>
           </form>
           <div className="mt-4 text-sm text-slate-400 space-y-2">
-            {/* ADDED: Forgot Password Link */}
             {authMode === "login" && (
               <button
                 onClick={() => setAuthMode("reset")}
@@ -1143,8 +1129,7 @@ function TrackerApp() {
                 Forgot Password?
               </button>
             )}
-
-            {authMode === "login" ? "New here? " : "Already have an account? "}
+            {authMode === "login" ? "New here? " : "Already have an account? "}{" "}
             <button
               onClick={() =>
                 setAuthMode(authMode === "login" ? "register" : "login")
@@ -1638,11 +1623,9 @@ function TrackerApp() {
             </>
           )}
 
-          {/* SETTINGS VIEW */}
           {view === "settings" && (
             <div className="max-w-2xl mx-auto space-y-6">
               <h2 className="text-2xl font-bold text-white mb-6">Settings</h2>
-
               <div className="bg-slate-800 p-6 rounded-xl border border-slate-700">
                 <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                   <Save size={20} className="text-blue-400" /> Data Management
@@ -1652,7 +1635,7 @@ function TrackerApp() {
                     <div>
                       <h4 className="font-bold text-white">Export Data</h4>
                       <p className="text-xs text-slate-400">
-                        Download a JSON backup of all your tasks & history.
+                        Download JSON backup.
                       </p>
                     </div>
                     <button
@@ -1666,7 +1649,7 @@ function TrackerApp() {
                     <div>
                       <h4 className="font-bold text-white">Reset Progress</h4>
                       <p className="text-xs text-slate-400">
-                        Clear tasks & XP but keep account active.
+                        Clear tasks & XP.
                       </p>
                     </div>
                     <button
@@ -1678,7 +1661,6 @@ function TrackerApp() {
                   </div>
                 </div>
               </div>
-
               <div className="bg-red-900/10 p-6 rounded-xl border border-red-900/30">
                 <h3 className="text-lg font-bold text-red-400 mb-4 flex items-center gap-2">
                   <AlertOctagon size={20} /> Danger Zone
@@ -1687,7 +1669,7 @@ function TrackerApp() {
                   <div>
                     <h4 className="font-bold text-white">Delete Account</h4>
                     <p className="text-xs text-red-300">
-                      Permanently delete your account and all data.
+                      Permanently delete account & data.
                     </p>
                   </div>
                   <button
@@ -1714,7 +1696,6 @@ function TrackerApp() {
                   <h2 className="text-2xl font-bold mt-4 text-white">
                     {userProfile.displayName}
                   </h2>
-                  {/* ADDED: Verify Button if not verified */}
                   {user.emailVerified ? (
                     <div className="flex items-center gap-1 text-green-400 mt-1 font-bold text-sm">
                       <BadgeCheck size={16} /> Verified
