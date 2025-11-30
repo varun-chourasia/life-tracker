@@ -39,8 +39,6 @@ import {
   Trophy,
   Award,
   Flame,
-  Target,
-  Zap,
   Save,
   Calendar,
   LineChart as LineChartIcon,
@@ -50,8 +48,6 @@ import {
   Settings,
 } from "lucide-react";
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -65,7 +61,7 @@ import {
 } from "recharts";
 
 // --- Firebase Imports ---
-import { initializeApp, getApps } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -367,6 +363,7 @@ const firebaseConfig = {
   appId: "1:905667947142:web:d3a745c2776b8dd6f93f07",
 };
 
+// Initialize Firebase safely
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -452,6 +449,7 @@ function TrackerApp() {
   const [darkMode, setDarkMode] = useState(true);
 
   const [user, setUser] = useState<User | null>(null);
+  // syncId state removed as it was unused
   const [isSyncing, setIsSyncing] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register" | "reset">(
     "login"
@@ -528,6 +526,7 @@ function TrackerApp() {
     localStorage.setItem("life_os_theme", newMode ? "dark" : "light");
   };
 
+  // --- Logic hooks ---
   useEffect(() => {
     const interval = setInterval(() => {
       if (notifPermission !== "granted") return;
