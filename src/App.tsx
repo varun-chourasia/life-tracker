@@ -1,15 +1,11 @@
-import React, { useState, useEffect, useMemo, Component, ErrorInfo, ReactNode } from 'react';
+import { useState, useEffect, useMemo, Component, type ErrorInfo, type ReactNode } from 'react';
 import { 
   CheckCircle2, 
-  Circle, 
   LayoutDashboard, 
   Calendar as CalendarIcon, 
   ListTodo, 
   Plus, 
   Trash2, 
-  Trophy, 
-  TrendingUp, 
-  Clock,
   Menu,
   X,
   ChevronLeft,
@@ -19,7 +15,6 @@ import {
   Sun,
   Moon,
   Coffee,
-  BookOpen,
   Dumbbell,
   LogOut,
   RefreshCw,
@@ -139,7 +134,9 @@ const db = getFirestore(app);
 const appId = 'life-os-v1'; 
 
 // --- Persistence ---
-try { enableIndexedDbPersistence(db).catch(() => {}); } catch (e) {}
+try { enableIndexedDbPersistence(db).catch(() => {}); } catch (e) {
+  // Silent fail for persistence
+}
 
 // --- Helper Functions ---
 const formatDate = (date: Date) => date.toISOString().split('T')[0];
@@ -147,7 +144,6 @@ const getDayName = (date: Date) => date.toLocaleDateString('en-US', { weekday: '
 
 function TrackerApp() {
   const [configError, setConfigError] = useState<string | null>(null);
-  const [firebaseInitialized, setFirebaseInitialized] = useState(false);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   
   const [user, setUser] = useState<User | null>(null);
@@ -197,7 +193,7 @@ function TrackerApp() {
     }
     try {
       signInAnonymously(auth).catch(err => { if (navigator.onLine) setConfigError(`Auth Error: ${err.message}`); });
-      const unsubscribe = onAuthStateChanged(auth, (u) => { setUser(u); setFirebaseInitialized(true); });
+      const unsubscribe = onAuthStateChanged(auth, (u) => { setUser(u); });
       const savedId = localStorage.getItem('life_os_sync_id');
       if (savedId) { setSyncId(savedId); setShowLoginModal(false); }
       return () => unsubscribe();
@@ -272,7 +268,7 @@ function TrackerApp() {
   const progressStats = useMemo(() => {
     const total = tasks.length;
     const completed = tasks.filter(t => t.completed).length;
-    const byCategory = Object.keys(CATEGORY_COLORS).map(cat => ({ name: cat, total: tasks.filter(t => t.category === cat).length, completed: tasks.filter(t => t.category === cat && t.completed).length })).filter(c => c.total > 0);
+    const byCategory = Object.keys(CATEGORY_COLORS).map(cat => ({ name: cat, total: tasks.filter(t => t.category === cat as Category).length, completed: tasks.filter(t => t.category === cat as Category && t.completed).length })).filter(c => c.total > 0);
     return { total, completed, byCategory };
   }, [tasks]);
   const routineStats = useMemo(() => {
