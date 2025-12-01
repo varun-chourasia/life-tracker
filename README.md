@@ -1,6 +1,6 @@
-🧬 Zentro - Life Operating System
+🧬 Chronoly - Life Operating System
 
-Zentro is a progressive web application (PWA) designed to gamify productivity and collect personal behavioral data. Unlike standard to-do lists, it functions as a data collection engine for personal habits, visualizing consistency through heatmaps and statistical trend lines.
+Chronoly is a progressive web application (PWA) designed to gamify productivity and collect personal behavioral data. Unlike standard to-do lists, it functions as a data collection engine for personal habits, visualizing consistency through heatmaps and statistical trend lines.
 
 It features real-time cloud synchronization, offline-first architecture, and a "Snapchat-style" streak logic to engineer discipline.
 

@@ -12,9 +12,9 @@ export default defineConfig({
         enabled: true // Enables PWA testing in local dev mode
       },
       manifest: {
-        name: 'Zentro - Life Operating System',
-        short_name: 'Zentro',
-        description: 'Master your time, habits, and focus with Zentro.',
+        name: 'Chronoly - Life Operating System',
+        short_name: 'Chronoly',
+        description: 'Master your time, habits, and focus with Chronoly.',
         theme_color: '#0f172a', // Matches slate-900
         background_color: '#0f172a',
         display: 'standalone',
