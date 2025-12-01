@@ -2429,6 +2429,9 @@ function TrackerApp() {
                   <p className="text-blue-400 font-medium mt-2">
                     {userProfile.profession}
                   </p>
+                  <p className="text-blue-400 font-medium mt-2">
+                    {email}
+                  </p>
                   <div className="mt-4 flex gap-2 flex-wrap justify-center">
                     <span className="px-3 py-1 bg-slate-700 text-slate-300 rounded-full text-xs font-bold border border-slate-600">
                       {userProfile.age} Years Old
