@@ -9,19 +9,19 @@ export default defineConfig({
     VitePWA({ 
       registerType: 'autoUpdate',
       devOptions: {
-        enabled: true // Enables PWA testing in local dev mode
+        enabled: true
       },
       manifest: {
-        name: 'Chronoly - Life Operating System',
+        name: 'Chronoly',
         short_name: 'Chronoly',
         description: 'Master your time, habits, and focus with Chronoly.',
-        theme_color: '#0f172a', // Matches slate-900
+        theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',
         orientation: 'portrait',
         icons: [
           {
-            src: 'pwa-192x192.png', 
+            src: 'pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any maskable'
@@ -36,6 +36,12 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    // 🔒 SECURITY: Hides your original code structure in production
+    sourcemap: false, 
+    // Minify logic to make reverse-engineering harder
+    minify: 'esbuild',
+  },
   server: {
     host: true,
     port: 5173,
